@@ -45,18 +45,6 @@ public class LogJoinController { // POST : 로그인을 받는 컨트롤러
         return new ResponseEntity<>(vo, HttpStatus.OK);
     }
 
-//   @PostMapping("/mypage/mypageupdate")
-//    public ResponseEntity<Boolean> mypageUpdate(@RequestBody Map<String, Object> customData) {
-//        String edtpwd = (String) customData.get("pwd");
-//        String edttel = (String) customData.get("tel");
-//        String edtaddr = (String) customData.get("addr");
-//
-//        LogJoinDao dao = new LogJoinDao();
-//        boolean isTrue = dao.mypageUpdate(edtpwd, edttel, edtaddr);
-//
-//        return new ResponseEntity<>(isTrue, HttpStatus.OK);
-//    }
-
 
     // POST : 마이페이지 회원정보 수정 업데이트 조회
     @PostMapping("/mypage/mypageupdate")
