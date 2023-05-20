@@ -18,7 +18,7 @@ public class BasketController {
     return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/mypage")
+    @GetMapping("/mypage/basket/cnt")
     public ResponseEntity<Integer> listCnt (@RequestParam String id){
         CartDAO dao = new CartDAO();
         int cnt = dao.listCnt(id);

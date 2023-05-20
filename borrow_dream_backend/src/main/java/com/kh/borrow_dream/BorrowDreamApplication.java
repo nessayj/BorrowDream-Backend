@@ -10,5 +10,4 @@ public class BorrowDreamApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BorrowDreamApplication.class, args);
 	}
-
 }
