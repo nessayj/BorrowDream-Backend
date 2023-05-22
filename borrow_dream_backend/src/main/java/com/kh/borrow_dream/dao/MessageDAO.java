@@ -56,14 +56,14 @@ public class MessageDAO {
         return list;
     }
 
-    // 받는사람 메세지보기
-    public MessageVO receiverMsg(String receiver) {
+    // 받는사람 메세지 상세보기
+    public MessageVO receiverMsg(int msgNo) {
         MessageVO vo = null;
         try {
             conn = Common.getConnection();
-            String sql = "SELECT SENDER, MSG_TITLE, MSG_CONTENTS, MSG_DATE FROM 메세지 WHERE RECEIVER=? ORDER BY MSG_DATE";
+            String sql = "SELECT SENDER, MSG_TITLE, MSG_CONTENTS, MSG_DATE FROM 메세지 WHERE MSG_NO=?";
             pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, receiver);
+            pStmt.setInt(1, msgNo);
             rs = pStmt.executeQuery();
 
             if(rs.next()) {
@@ -83,14 +83,51 @@ public class MessageDAO {
         }
         return vo;
     }
-    // 보는사람 메세지보기
-    public MessageVO senderMsg(String sender) {
+
+
+    // 받는사람 메세지 리스트보기
+    public List<MessageVO> receiverMsgList(String receiver) {
+        List<MessageVO> msg = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            String sql = "SELECT MSG_NO, SENDER, MSG_TITLE, MSG_CONTENTS, MSG_DATE FROM 메세지 WHERE RECEIVER=? ORDER BY MSG_DATE";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, receiver);
+            rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+                int msgNo = rs.getInt("MSG_NO");
+                String sender = rs.getString("SENDER");
+                String msgTitle = rs.getString("MSG_TITLE");
+                String msgContents = rs.getString("MSG_CONTENTS");
+                Date msgDate = rs.getDate("MSG_DATE");
+
+                MessageVO vo = new MessageVO();
+                vo = new MessageVO();
+                vo.setMsgNo(msgNo);
+                vo.setSender(sender);
+                vo.setMsgTitle(msgTitle);
+                vo.setMsgContents(msgContents);
+                vo.setMsgDate(msgDate);
+                msg.add(vo);
+            }
+            Common.close(rs);
+            Common.close(pStmt);
+            Common.close(conn);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return msg;
+    }
+    // 보낸사람기준 메세지보기
+    public MessageVO senderMsg(int msgNo) {
         MessageVO vo = null;
         try {
             conn = Common.getConnection();
-            String sql = "SELECT RECEIVER, MSG_TITLE, MSG_CONTENTS, MSG_DATE FROM 메세지 WHERE SENDER=? ORDER BY MSG_DATE";
+            String sql = "SELECT RECEIVER, MSG_TITLE, MSG_CONTENTS, MSG_DATE FROM 메세지 WHERE MSG_NO=?";
             pStmt = conn.prepareStatement(sql);
-            pStmt.setString(1, sender);
+            pStmt.setInt(1, msgNo);
             rs = pStmt.executeQuery();
 
             if(rs.next()) {
@@ -110,6 +147,41 @@ public class MessageDAO {
         return vo;
     }
 
+    // 보낸사람기준 메세지보기 리스트
+    public List<MessageVO> senderMsgList(String sender) {
+        List<MessageVO> msg = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            String sql = "SELECT MSG_NO, RECEIVER, MSG_TITLE, MSG_CONTENTS, MSG_DATE FROM 메세지 WHERE SENDER=? ORDER BY MSG_DATE";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, sender);
+            rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+                int msgNo = rs.getInt("MSG_NO");
+                String receiver = rs.getString("RECEIVER");
+                String msgTitle = rs.getString("MSG_TITLE");
+                String msgContents = rs.getString("MSG_CONTENTS");
+                Date msgDate = rs.getDate("MSG_DATE");
+
+                MessageVO vo = new MessageVO();
+                vo = new MessageVO();
+                vo.setMsgNo(msgNo);
+                vo.setSender(receiver);
+                vo.setMsgTitle(msgTitle);
+                vo.setMsgContents(msgContents);
+                vo.setMsgDate(msgDate);
+                msg.add(vo);
+            }
+            Common.close(rs);
+            Common.close(pStmt);
+            Common.close(conn);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return msg;
+    }
 
     // 메세지 보내기
     public boolean sendMsg(String sender, String receiver, String msgTitle, String msgContents) {

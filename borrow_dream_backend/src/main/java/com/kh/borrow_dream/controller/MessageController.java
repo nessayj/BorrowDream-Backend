@@ -24,16 +24,30 @@ public class MessageController {
 
     // 작성자가 보낸 메세지 보기
     @GetMapping("/sender")
-    public ResponseEntity<MessageVO> senderMsg(@RequestParam("sender") String sender) {
-        MessageVO msgSender = messageDAO.senderMsg(sender);
+    public ResponseEntity<MessageVO> senderMsg(@RequestParam("msgNo") int msgNo) {
+        MessageVO msgSender = messageDAO.senderMsg(msgNo);
         return new ResponseEntity<>(msgSender, HttpStatus.OK);
+    }
+
+    // 작성자가 보낸 메세지 리스트 보기
+    @GetMapping("/senderList")
+    public ResponseEntity<List<MessageVO>> senderMsgList(@RequestParam("sender") String sender) {
+        List<MessageVO> msg = messageDAO.receiverMsgList(sender);
+        return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     // 받은메세지보기
     @GetMapping("/receiver")
-    public ResponseEntity<MessageVO> receiverMsg(@RequestParam("receiver") String receiver) {
-        MessageVO msgReceiver = messageDAO.receiverMsg(receiver);
+    public ResponseEntity<MessageVO> receiverMsg(@RequestParam("msgNo") int msgNo) {
+        MessageVO msgReceiver = messageDAO.receiverMsg(msgNo);
         return new ResponseEntity<>(msgReceiver, HttpStatus.OK);
+    }
+
+    // 받은메세지 리스트보기
+    @GetMapping("/receiverList")
+    public ResponseEntity<List<MessageVO>> receiverMsgList(@RequestParam("receiver") String receiver) {
+        List<MessageVO> msg = messageDAO.receiverMsgList(receiver);
+        return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     // 메세지보내기
