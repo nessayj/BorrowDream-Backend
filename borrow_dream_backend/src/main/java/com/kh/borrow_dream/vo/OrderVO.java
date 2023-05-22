@@ -19,4 +19,5 @@ public class OrderVO {
     private int od_tPrice;
     private int od_quantity;
     private String id;
+    private String img;
 }

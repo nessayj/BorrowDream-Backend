@@ -29,6 +29,7 @@ public class OrderDAO {
                 int dayCnt = rs.getInt("OD_TOTALDAY");
                 int point = rs.getInt("OD_POINT");
                 int total = rs.getInt("OD_TOTAL");
+                String img = rs.getString("OD_IMG");
 
                 OrderVO vo = new OrderVO();
                 vo.setOd_num(no);
@@ -41,6 +42,7 @@ public class OrderDAO {
                 vo.setOd_quantity(quantity);
                 vo.setOd_tPrice(total);
                 vo.setOd_point(point);
+                vo.setImg(img);
                 list.add(vo);
             }
             Common.close(rs);
@@ -53,9 +55,9 @@ public class OrderDAO {
     }
     public boolean orderUpdate(String id) {
         int result = 0;
-        String sql = "INSERT INTO 주문내역 (OD_NUM, OD_AT_NUM, OD_NAME, OD_PRICE, OD_DATE, OD_BORROW, OD_RETURN, OD_TOTALDAY, OD_POINT, OD_TOTAL, OD_QU, OD_CUS) "
+        String sql = "INSERT INTO 주문내역 (OD_NUM, OD_AT_NUM, OD_NAME, OD_PRICE, OD_DATE, OD_BORROW, OD_RETURN, OD_TOTALDAY, OD_POINT, OD_TOTAL, OD_QU, OD_CUS, OD_IMG) "
                     + "SELECT (TO_CHAR(SYSTIMESTAMP, 'YYMMDDHH24MISS')+주문번호_SEQ.NEXTVAL), BK_AT_NUM, BK_NAME, BK_PRICE, SYSDATE, BK_BORROW, BK_RETURN, BK_TOTALDAY, (BK_PRICE * BK_QU * BK_TOTALDAY / 100),"
-                    + " (BK_PRICE * BK_QU * BK_TOTALDAY), BK_QU, BK_CUS FROM 장바구니 WHERE BK_CUS = ?";
+                    + " (BK_PRICE * BK_QU * BK_TOTALDAY), BK_QU, BK_CUS, BK_IMG FROM 장바구니 WHERE BK_CUS = ?";
         try {
             conn = Common.getConnection();
             pStmt = conn.prepareStatement(sql);
