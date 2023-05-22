@@ -119,6 +119,36 @@ public class MyLendDAO {
         return vo;
     }
 
+    // 아이디 별로 리스트보이기
+    public List<MyLendVO> getById(String borrowId) {
+        List<MyLendVO> IdList = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            String sql = "SELECT MY_NO, MY_ITEM, IS_BORROWED FROM 내빌드 WHERE ID=? ORDER BY MY_DATE DESC";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1,borrowId);
+            rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+                int myNo = rs.getInt("MY_NO");
+                String myItem = rs.getString("MY_ITEM");
+                int isBorrowed = rs.getInt("IS_BORROWED");
+
+                MyLendVO vo = new MyLendVO();
+                vo.setMyNo(myNo);
+                vo.setMyItem(myItem);
+                vo.setIsBorrowed(isBorrowed);
+                IdList.add(vo);
+            }
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return IdList;
+    }
+
     // 내빌드 글 수정
     public boolean myLendEdit (String myItem, String itemExplain, String itemUrl, int itemQuantity, int itemPrice, int isBorrowed, int myNo) {
         String sql = "UPDATE 내빋드 SET MY_ITEM=?, ITEM_EXPLAIN=?, ITEM_URL = ?, ITEM_QUANTITY=?, ITEM_PRICE=?, IS_BORROWED=? WHERE MY_NO = ?";

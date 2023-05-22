@@ -120,7 +120,7 @@ public class MessageDAO {
         }
         return msg;
     }
-    // 보낸사람기준 메세지보기
+    // 보낸 메세지보기
     public MessageVO senderMsg(int msgNo) {
         MessageVO vo = null;
         try {
@@ -147,7 +147,7 @@ public class MessageDAO {
         return vo;
     }
 
-    // 보낸사람기준 메세지보기 리스트
+    // 보낸 메세지보기 리스트
     public List<MessageVO> senderMsgList(String sender) {
         List<MessageVO> msg = new ArrayList<>();
         try {
@@ -167,7 +167,7 @@ public class MessageDAO {
                 MessageVO vo = new MessageVO();
                 vo = new MessageVO();
                 vo.setMsgNo(msgNo);
-                vo.setSender(receiver);
+                vo.setReceiver(receiver);
                 vo.setMsgTitle(msgTitle);
                 vo.setMsgContents(msgContents);
                 vo.setMsgDate(msgDate);
@@ -203,4 +203,7 @@ public class MessageDAO {
         if(rs == 1) return true;
         else return false;
     }
+
+
+
 }

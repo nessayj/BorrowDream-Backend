@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +58,12 @@ public class BoardController {
         }
 
     }
-
+    // 아이디 별 문의 리스트
+    @GetMapping("/myBoardList")
+    public ResponseEntity<List<BoardVO>> getById(@RequestParam("writerId") String writerId) {
+        List<BoardVO> idList = boardDAO.getById(writerId);
+        return new ResponseEntity<>(idList,HttpStatus.OK);
+    }
 
     // 문의글 상세보기
     @GetMapping("/board-list/inquiry-view")
@@ -90,7 +96,6 @@ public class BoardController {
         if(result) return new ResponseEntity(true, HttpStatus.OK);
         else return new ResponseEntity(false, HttpStatus.OK);
     }
-
 
 
     // 문의글 삭제
@@ -139,6 +144,8 @@ public class BoardController {
         if(result) return new ResponseEntity<>(true, HttpStatus.OK);
         else return new ResponseEntity<>(false, HttpStatus.OK);
     }
+
+
 
 
 

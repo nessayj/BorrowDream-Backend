@@ -32,8 +32,8 @@ public class MessageController {
     // 작성자가 보낸 메세지 리스트 보기
     @GetMapping("/senderList")
     public ResponseEntity<List<MessageVO>> senderMsgList(@RequestParam("sender") String sender) {
-        List<MessageVO> msg = messageDAO.receiverMsgList(sender);
-        return new ResponseEntity<>(msg, HttpStatus.OK);
+        List<MessageVO> sendMsg = messageDAO.senderMsgList(sender);
+        return new ResponseEntity<>(sendMsg,HttpStatus.OK);
     }
 
     // 받은메세지보기

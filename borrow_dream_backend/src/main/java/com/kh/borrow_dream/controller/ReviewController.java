@@ -23,6 +23,13 @@ public class ReviewController {
         return new ResponseEntity<>(reviewList, HttpStatus.OK);
     }
 
+    // 후기 아이디 별 글 가지고오기
+    @GetMapping("/reviewById")
+    public ResponseEntity<List<ReviewVO>> getById(@RequestParam("rId") String rId) {
+        List<ReviewVO> listById = reviewDAO.getById(rId);
+        return new ResponseEntity<>(listById, HttpStatus.OK);
+    }
+
     //후기작성
     @PostMapping("/review-write")
     public ResponseEntity<Boolean> writeReview(@RequestBody Map<String, String> data) {

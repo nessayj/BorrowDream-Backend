@@ -73,4 +73,11 @@ public class MyLendController {
         else return new ResponseEntity(null, HttpStatus.OK);
     }
 
+    // 아이디 별로 글리스트 가지고오기
+    @GetMapping("/myLendById")
+    public ResponseEntity<List<MyLendVO>> getById(@RequestParam("borrowId") String borrowId) {
+        List<MyLendVO> idList = myLendDAO.getById(borrowId);
+        return new ResponseEntity<>(idList, HttpStatus.OK);
+    }
+
 }

@@ -79,6 +79,38 @@ public class ReviewDAO {
         else return false;
     }
 
+    // 리뷰 아이디별 글 가지고오기
+    public List<ReviewVO> getById(String rId) {
+        List<ReviewVO> listById = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            String sql = "SELECT REVIEW_NO, R_TITLE, R_DATE FROM REVIEW WHERE R_ID =? ORDER BY R_DATE DESC";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, rId);
+            rs = pStmt.executeQuery();
+
+
+            while (rs.next()) {
+                int reviewNo = rs.getInt("REVIEW_NO");
+                String rTitle = rs.getString("R_TITLE");
+                Date rDate = rs.getDate("R_DATE");
+
+                ReviewVO vo = new ReviewVO();
+                vo.setReviewNo(reviewNo);
+                vo.setRTitle(rTitle);
+                vo.setRDate(rDate);
+                listById.add(vo);
+            }
+            Common.close(rs);
+            Common.close(stmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listById;
+    }
+
+
     // 리뷰 글 보기
     public ReviewVO viewReview(int reviewNo) {
         System.out.println("리뷰넘버 들어오나요" + reviewNo);

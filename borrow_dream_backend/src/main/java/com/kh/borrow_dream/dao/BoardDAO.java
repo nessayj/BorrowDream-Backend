@@ -54,6 +54,44 @@ public class BoardDAO {
         return list;
     }
 
+    // 아이디 별 문의하기 조회
+    public List<BoardVO> getById(String writerId) {
+        List<BoardVO> IdList = new ArrayList<>();
+        try {
+            conn = Common.getConnection();
+            String sql = "SELECT BOARD_NO, CATEGORY, TITLE, VIEWS, WRITE_DATE, BOARD_PWD, ISUNKNOWN FROM 문의하기 WHERE WRITER_ID=? ORDER BY WRITE_DATE DESC";
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, writerId);
+            rs = pStmt.executeQuery();
+
+            while (rs.next()) {
+                int boardNo = rs.getInt("BOARD_NO");
+                String category = rs.getString("CATEGORY");
+                String title = rs.getString("TITLE");
+                int views = rs.getInt("VIEWS");
+                Date writeDate = rs.getDate("WRITE_DATE");
+                int boardPwd = rs.getInt("BOARD_PWD");
+                int isUnknown = rs.getInt("ISUNKNOWN");
+
+                BoardVO vo = new BoardVO();
+                vo.setBoardNo(boardNo);
+                vo.setCategory(category);
+                vo.setTitle(title);
+                vo.setViews(views);
+                vo.setWriteDate(writeDate);
+                vo.setBoardPwd(boardPwd);
+                vo.setIsUnknown(isUnknown);
+                IdList.add(vo);
+            }
+            Common.close(rs);
+            Common.close(pStmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return IdList;
+    }
+
     // 문의하기 작성
     public boolean writeInquiry(String category, String title, String writerId, String contents, int boardPwd, int isUnknown) {
         System.out.println("글쓴이 아이디 : " + writerId);
