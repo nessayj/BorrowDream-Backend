@@ -20,4 +20,5 @@ public class CartVO {
     private int quantity;
     private int tPrice;
     private String id;
+    private String img;
 }

@@ -67,6 +67,7 @@ public class LogJoinController { // POST : 로그인을 받는 컨트롤러
     public ResponseEntity<Boolean> customCheck(@RequestParam String id) {
         LogJoinDao dao = new LogJoinDao();
         boolean isTrue = dao.customRegCheck(id);
+        System.out.println(isTrue);
         return new ResponseEntity<>(isTrue, HttpStatus.OK);
     }
 

@@ -35,7 +35,7 @@ public class ProductDao {
     public ResponseEntity<List<ProductVo>> getProducts(Integer categoryNo) {
         List<ProductVo> productVoList = new ArrayList<>();
         // 상품정보 조회 (상품명이 동일한 것)
-        String sql = "SELECT * FROM 상품정보2 WHERE CATEGORY_NO = " + categoryNo;
+        String sql = "SELECT * FROM 상품정보 WHERE CATEGORY_NO = " + categoryNo;
         try {
             conn = Common.getConnection();
             pstmt = conn.prepareStatement(sql);
@@ -69,7 +69,7 @@ public class ProductDao {
     public ResponseEntity<ProductVo> getProduct(String pName) {
         List<ProductVo> productVoList = new ArrayList<>();
         // 상품정보 조회 (상품명이 동일한 것)
-        String sql = "SELECT * FROM 상품정보2 WHERE P_NAME = " + pName;
+        String sql = "SELECT * FROM 상품정보 WHERE P_NAME = " + pName;
         try {
             conn = Common.getConnection();
             statement = conn.createStatement();
@@ -133,7 +133,7 @@ public class ProductDao {
 
     public boolean registerProduct(ProductVo product) {
         int result = 0;
-        String sql = "INSERT INTO 상품정보2(CATEGORY_NO, P_NO, P_NAME, P_PRICE, P_img, P_DESCRIPTION, P_QUANTITY) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO 상품정보(CATEGORY_NO, P_NO, P_NAME, P_PRICE, P_img, P_DESCRIPTION, P_QUANTITY) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             conn = Common.getConnection();
             pstmt = conn.prepareStatement(sql);

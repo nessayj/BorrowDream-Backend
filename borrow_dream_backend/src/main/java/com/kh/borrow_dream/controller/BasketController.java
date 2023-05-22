@@ -52,4 +52,16 @@ public class BasketController {
         List<CartVO> list = dao.checkList(getUserId, getPname);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    @PostMapping("/cartItem/insert")
+    public ResponseEntity<Boolean> insertCartItem(@RequestBody Map<String, String> insertData){
+        String getUserId = insertData.get("id");
+        String getPname = insertData.get("pname");
+        String getStartDate = insertData.get("startDate");
+        String getEndDate = insertData.get("endDate");
+        int getDayCnt = Integer.parseInt(insertData.get("dayCnt"));
+        CartDAO dao = new CartDAO();
+        boolean isTrue = dao.insertItem(getUserId, getPname, getDayCnt, getStartDate, getEndDate);
+        return new ResponseEntity<Boolean>(isTrue, HttpStatus.OK);
+    }
 }

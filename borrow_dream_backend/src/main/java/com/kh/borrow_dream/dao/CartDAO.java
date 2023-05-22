@@ -2,6 +2,9 @@ package com.kh.borrow_dream.dao;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.util.unit.DataUnit;
+
 import com.kh.borrow_dream.common.Common;
 import com.kh.borrow_dream.vo.CartVO;
 
@@ -31,6 +34,7 @@ public class CartDAO {
                 int total = rs.getInt("BK_TOTAL");
                 int quantity = rs.getInt("BK_QU");
                 String userId = rs.getString("BK_CUS");
+                String imgPath = rs.getString("BK_IMG");
 
                 CartVO vo = new CartVO();
                 vo.setBk_bno(bno);
@@ -44,6 +48,7 @@ public class CartDAO {
                 vo.setTPrice(total);
                 vo.setQuantity(quantity);
                 vo.setId(userId);
+                vo.setImg(imgPath);
                 list.add(vo);
             }
             Common.close(rs);
@@ -53,6 +58,33 @@ public class CartDAO {
             e.printStackTrace();
         }
         return list;
+    }
+
+    public boolean insertItem(String id, String pname, int dayCnt, String startDate, String endDate) {
+        int result = 0;
+        System.out.println(id + " " + pname + " " + dayCnt + " " + startDate + " " + endDate);
+        String sql = "INSERT INTO 장바구니 (BK_NUM, BK_AT_NUM, BK_NAME, BK_PRICE, BK_DATE, BK_BORROW, BK_RETURN, BK_TOTALDAY, BK_TOTAL, BK_QU, BK_CUS, BK_IMG)" +
+        "SELECT NVL((SELECT MAX(BK_NUM) FROM 장바구니), 0) + 1, P_NO, P_NAME, P_PRICE, SYSDATE, ?, ?, ?, (P_PRICE * ? * 1), 1, ?, P_IMG FROM 상품정보 WHERE P_NAME = ?";
+        try {
+            conn = Common.getConnection();
+            pStmt = conn.prepareStatement(sql);
+            pStmt.setString(1, startDate);
+            pStmt.setString(2, endDate);
+            pStmt.setInt(3, dayCnt);
+            pStmt.setInt(4, dayCnt);
+            pStmt.setString(5, id);
+            pStmt.setString(6, pname);
+    
+            result = pStmt.executeUpdate();
+            System.out.println("리스트 추가 DB 결과 확인 : " + result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Common.close(pStmt);
+        Common.close(conn);
+    
+        if (result == 1) return true;
+        else return false;
     }
 
     public List<CartVO> checkList(String userId, String pname) {
