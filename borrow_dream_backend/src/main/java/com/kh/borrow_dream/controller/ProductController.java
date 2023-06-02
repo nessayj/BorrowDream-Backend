@@ -63,4 +63,12 @@ public class ProductController {
         boolean isTrue = productDao.registerProduct(product);
         return new ResponseEntity<>(isTrue, HttpStatus.OK);
     }
+
+    @GetMapping("/productOrder")
+    public ResponseEntity<ProductVo> directOrder(@RequestParam String pName) {
+        System.out.println("id : " + pName);
+        ProductDao dao = new ProductDao();
+        ProductVo vo = dao.productList(pName);
+        return new ResponseEntity<>(vo, HttpStatus.OK);
+    }
 }

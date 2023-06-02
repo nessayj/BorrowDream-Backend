@@ -3,6 +3,7 @@ package com.kh.borrow_dream.dao;
 import com.kh.borrow_dream.common.Common;
 import com.kh.borrow_dream.vo.ProductVo;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
@@ -60,12 +61,7 @@ public class ProductDao {
         }
     }
 
-    /**
-     * 상품번호를 기준으로 조회하여 1건 상품의 상세정보를 반환하는 기능을 하는 DAO 입니다.
-     *
-     * @param pNo*
-     * @return ResponseEntity<Product>
-     */
+
     public ResponseEntity<ProductVo> getProduct(String pName) {
         List<ProductVo> productVoList = new ArrayList<>();
         // 상품정보 조회 (상품명이 동일한 것)
@@ -153,5 +149,39 @@ public class ProductDao {
             Common.close(conn);
         }
         return result == 1;
+    }
+
+    public ProductVo productList(String id) {
+        ProductVo vo = null;
+        System.out.println(id);
+        try {
+            conn = Common.getConnection();
+            String sql = "SELECT * FROM 상품정보 WHERE P_NAME = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            while(rs.next()){
+                int pno = rs.getInt("P_NO");
+                String pname = rs.getString("P_NAME");
+                int price = rs.getInt("P_PRICE");
+                String imgpath = rs.getString("P_IMG");
+                String desc = rs.getString("P_DESCRIPTION");
+                int quantity = rs.getInt("P_NO");
+                int ctno = rs.getInt("CATEGORY_NO");
+                vo = new ProductVo(pno, pname, price, imgpath, desc, quantity, ctno);
+                vo.setPNo(pno);
+                vo.setPName(pname);
+                vo.setPPrice(price);
+                vo.setPImg(imgpath);
+                vo.setPDescription(desc);
+                vo.setPQuantity(quantity);
+                vo.setCategoryNo(ctno);
+            }
+            Common.close(rs);
+            Common.close(pstmt);
+            Common.close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+        return vo;
     }
 }

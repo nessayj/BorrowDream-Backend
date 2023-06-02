@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/BorrowDream_Backend.iml" filepath="$PROJECT_DIR$/.idea/BorrowDream_Backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/borrow_dream.main.iml" filepath="$PROJECT_DIR$/.idea/modules/borrow_dream.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.kh.borrow_dream.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.kh.borrow_dream.main.iml" />
     </modules>
   </component>
 </project>
